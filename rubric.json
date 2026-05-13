@@ -1,0 +1,39 @@
+{
+  "rubric": {
+    "name": "DT Fellow Performance Rubric",
+    "scale": "1-10",
+    "bands": [
+      {
+        "band": "Need Attention",
+        "range": [1, 3],
+        "description": "Not yet productive. The issue is pre-productivity.",
+        "levels": [
+          { "score": 1, "label": "Disengaged",        "indicator": "Fellow is not present mentally or physically. Supervisor reports absence, missed commitments, no initiative." },
+          { "score": 2, "label": "Struggling",        "indicator": "Fellow shows up but cannot keep up. Frequent rework, low ownership, supervisor has to chase." },
+          { "score": 3, "label": "Slowly Adjusting",  "indicator": "Effort is visible but output is inconsistent. Needs frequent direction." }
+        ]
+      },
+      {
+        "band": "Productive",
+        "range": [4, 7],
+        "description": "Fellow is contributing. Differences are in depth and independence.",
+        "levels": [
+          { "score": 4, "label": "Task Completer",          "indicator": "Closes assigned tasks on time but does not initiate beyond the brief." },
+          { "score": 5, "label": "Dependable Operator",     "indicator": "Reliable execution, no rework, but no system-level thinking yet." },
+          { "score": 6, "label": "Reliable and Productive", "indicator": "Owns workstreams. Supervisor trusts Fellow with cross-functional coordination." },
+          { "score": 7, "label": "Drives Outcomes",         "indicator": "Connects work to a KPI. Proactively raises issues. Influences peers." }
+        ]
+      },
+      {
+        "band": "Exceptional",
+        "range": [8, 10],
+        "description": "Fellow is building durable capability inside the client org.",
+        "levels": [
+          { "score": 8,  "label": "Systems Builder",  "indicator": "Builds artefacts (SOPs, dashboards, rituals) that outlast the engagement." },
+          { "score": 9,  "label": "Org Multiplier",   "indicator": "Team members upskill because of the Fellow. Supervisor changes how they run reviews." },
+          { "score": 10, "label": "Founding Caliber", "indicator": "Operates as a peer to the founder. Drives a measurable shift in a primary KPI." }
+        ]
+      }
+    ]
+  }
+}

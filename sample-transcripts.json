@@ -1,0 +1,31 @@
+{
+  "transcripts": [
+    {
+      "id": "transcript-001",
+      "fellow": {
+        "name": "Karthik Narayanan",
+        "tenure": "4 months",
+        "placement": "Support new product line launch at a mid-sized auto-component manufacturer"
+      },
+      "supervisorTranscript": "See, Karthik is a sincere boy. Comes on time, doesn't make excuses. The team likes him also. But honestly, I have to keep telling him what to do next. Last week we had a delivery issue with our new SKU and he was just waiting for me to tell him to call the customer. He didn't pick up the phone himself. The work he does is fine, no rework, but I am not seeing him own the line. He completed the SOP I asked him to write, that was good — clean document, the operators are using it. But beyond that, if I don't push, nothing moves. I want to see him take charge of one full workstream end-to-end. Maybe the QC reporting — he could own that. Let's see in next month."
+    },
+    {
+      "id": "transcript-002",
+      "fellow": {
+        "name": "Priya Sharma",
+        "tenure": "6 months",
+        "placement": "Drive process efficiency at a packaging materials company"
+      },
+      "supervisorTranscript": "Priya has changed how our morning standup runs. Before she came, we used to spend 45 minutes on it and walk out without decisions. She introduced a simple template — three columns, owner, blocker, due date — and now the meeting is 15 minutes and we close items. My production head asked her to also run it for the dispatch team. She built a small Google Sheet dashboard that pulls our cycle time data — we used to wait for the MIS report at month-end, now I see it daily. Last month our cycle time dropped from 9.2 to 7.8 hours, and I think a big part is because the team can see it. She is not just doing tasks, she is leaving things behind. I told my partner — this is the kind of Fellow we should ask for again."
+    },
+    {
+      "id": "transcript-003",
+      "fellow": {
+        "name": "Rahul Mehta",
+        "tenure": "2 months",
+        "placement": "Reduce inventory holding cost at a textile unit"
+      },
+      "supervisorTranscript": "Honestly I don't know what to say. He is here, he sits at his desk, but I am not feeling his presence in the operations. I asked him last week to do a stock-out analysis and he sent me a sheet — half the SKUs were missing. When I pointed it out, he said the data was not clean. That may be true but then come and tell me, don't just give me a half-thing. The warehouse team is not really talking to him. I think he is uncomfortable on the floor. Maybe he is more of an office guy. I haven't seen any output that I can point to and say — this came from Rahul."
+    }
+  ]
+}

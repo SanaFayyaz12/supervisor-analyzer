@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Feedback Analyzer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; margin-bottom: 20px; }
+        textarea { width: 100%; height: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical; }
+        button { background: #2c3e50; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #34495e; }
+        button:disabled { background: #95a5a6; cursor: not-allowed; }
+        .loading { display: none; color: #7f8c8d; margin-top: 10px; }
+        .result { margin-top: 30px; display: none; }
+        .card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2c3e50; }
+        .card h2 { color: #2c3e50; margin-bottom: 15px; }
+        .score-value { font-size: 48px; font-weight: bold; color: #2c3e50; }
+        .score-label { font-size: 18px; color: #7f8c8d; }
+        .evidence-item { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .positive { border-left: 4px solid #27ae60; }
+        .negative { border-left: 4px solid #e74c3c; }
+        .neutral { border-left: 4px solid #f39c12; }
+        .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+        .tag-positive { background: #d5f5e3; color: #27ae60; }
+        .tag-negative { background: #fadbd8; color: #e74c3c; }
+        .tag-neutral { background: #fef9e7; color: #f39c12; }
+        .gap-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #ddd; }
+        .question-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #ddd; }
+        .kpi-item { display: inline-block; background: #eaf2ff; color: #2980b9; padding: 5px 12px; border-radius: 20px; margin: 5px; font-size: 13px; }
+        .error { background: #fadbd8; color: #e74c3c; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Supervisor Feedback Analyzer</h1>
+        <p style="color:#7f8c8d; margin-bottom:20px;">Paste supervisor transcript below and click Analyze</p>
+        
+        <textarea id="transcript" placeholder="Paste supervisor transcript here..."></textarea>
+        <br>
+        <button id="analyzeBtn" onclick="analyze()">🚀 Run Analysis</button>
+        <p class="loading" id="loading">⏳ Analyzing transcript... This may take 30-60 seconds...</p>
+        <div class="error" id="error"></div>
+
+        <div class="result" id="result">
+            <div class="card">
+                <h2>📊 Score</h2>
+                <div class="score-value" id="scoreValue"></div>
+                <div class="score-label" id="scoreLabel"></div>
+                <p style="margin-top:10px;" id="scoreJustification"></p>
+            </div>
+
+            <div class="card">
+                <h2>📝 Evidence</h2>
+                <div id="evidence"></div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 KPI Mapping</h2>
+                <div id="kpiMapping"></div>
+            </div>
+
+            <div class="card">
+                <h2>⚠️ Gaps</h2>
+                <div id="gaps"></div>
+            </div>
+
+            <div class="card">
+                <h2>❓ Follow-up Questions</h2>
+                <div id="questions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function analyze() {
+            const transcript = document.getElementById('transcript').value.trim();
+            if (!transcript) { alert('Please paste a transcript first!'); return; }
+
+            document.getElementById('analyzeBtn').disabled = true;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:3000/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transcript })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                displayResults(data);
+
+            } catch (error) {
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Error: ' + error.message;
+            } finally {
+                document.getElementById('analyzeBtn').disabled = false;
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            document.getElementById('scoreValue').textContent = data.score.value + '/10';
+            document.getElementById('scoreLabel').textContent = data.score.label;
+            document.getElementById('scoreJustification').textContent = data.score.justification;
+
+            const evidenceDiv = document.getElementById('evidence');
+            evidenceDiv.innerHTML = '';
+            data.evidence.forEach(e => {
+                evidenceDiv.innerHTML += `
+                    <div class="evidence-item ${e.signal}">
+                        <span class="tag tag-${e.signal}">${e.signal.toUpperCase()}</span>
+                        <p><strong>"${e.quote}"</strong></p>
+                        <p style="color:#7f8c8d; margin-top:5px;">${e.interpretation}</p>
+                    </div>`;
+            });
+
+            const kpiDiv = document.getElementById('kpiMapping');
+            kpiDiv.innerHTML = '';
+            data.kpiMapping.forEach(k => {
+                kpiDiv.innerHTML += `<span class="kpi-item">✅ ${k.kpi}</span>`;
+            });
+
+            const gapsDiv = document.getElementById('gaps');
+            gapsDiv.innerHTML = '';
+            data.gaps.forEach(g => {
+                gapsDiv.innerHTML += `
+                    <div class="gap-item">
+                        <strong>⚠️ ${g.dimension}</strong>
+                        <p style="color:#7f8c8d; margin-top:5px;">${g.detail}</p>
+                    </div>`;
+            });
+
+            const questionsDiv = document.getElementById('questions');
+            questionsDiv.innerHTML = '';
+            data.followUpQuestions.forEach((q, i) => {
+                questionsDiv.innerHTML += `
+                    <div class="question-item">
+                        <strong>Q${i+1}: ${q.question}</strong>
+                        <p style="color:#7f8c8d; margin-top:5px;">Looking for: ${q.targetGap}</p>
+                    </div>`;
+            });
+
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
